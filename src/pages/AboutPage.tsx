@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import { Card } from "antd";
+import ReactMarkdown from "react-markdown"
+import { readFileSync } from 'fs'
+
 
 class AboutPage extends React.Component<unknown, unknown> {
     public render(): JSX.Element {
+
+        const input = '### 标题';
         return (
-            <Card bordered title="About" style={{ margin: "16px 16px"}}>
-                <p>A demo web app based on React and written in TypeScript. </p>
-                <p>For details, please see &nbsp;
-                    <a href="https://github.com/chunliu/typescript-react-hot-reload">
-                        https://github.com/chunliu/typescript-react-hot-reload
-                    </a>
-                </p>
+            <Card bordered title="About" style={{ margin: "16px 16px" }}>
+                <ReactMarkdown source={input} />
             </Card>
         );
     }

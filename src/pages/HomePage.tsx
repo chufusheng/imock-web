@@ -1,18 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import { Form, Input, Button, Card, Row, Col, Table, Tag, Space } from "antd";
 import Axios from "../utils/axios"
-
-
-
-
-
+import config from "../config/config"
 
 
 const FormItem = Form.Item;
-
-const style = { background: '#0092ff', padding: '8px 0' };
-
 
 class HomePage extends React.Component<any, any> {
 
@@ -22,17 +18,16 @@ class HomePage extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        void Axios.get('http://127.0.0.1:8003/module/test?a=0')
-            .then(response => {
-                this.setState({ dataList: [{ appName: response.data }] })
-            })
+        // const configa = new config();
+        // window.console.log("111111", configa.getAppCode)
+        this.handleSubmit({})
     }
 
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    handleSubmit = () => {
-        void Axios.get('http://127.0.0.1:8003/module/test?a=0').then(response => {
-            this.setState({ dataList: [{ appName: response.data }] })
+    handleSubmit = (value:any) => {
+        void Axios.post('http://127.0.0.1:8003/module/get/list', value).then(response => {
+            window.console.log(JSON.stringify(value))
+            this.setState({ dataList: response.data.data })
         })
     }
 
@@ -40,22 +35,28 @@ class HomePage extends React.Component<any, any> {
 
         const columns = [
             {
+                key: 1,
                 title: '服务名',
                 dataIndex: 'appName',
             },
             {
+                key: 2,
                 title: '环境',
                 dataIndex: 'environment',
             }, {
+                key: 3,
                 title: 'IP',
                 dataIndex: 'ip',
             }, {
+                key: 4,
                 title: '端口',
                 dataIndex: 'port',
             }, {
+                key: 5,
                 title: '版本',
                 dataIndex: 'version',
             }, {
+                key: 6,
                 title: '状态',
                 dataIndex: 'status',
             }, {
@@ -63,8 +64,8 @@ class HomePage extends React.Component<any, any> {
                 key: 'action',
                 render: (text: any, record: { name: React.ReactNode; }) => (
                     <Space size="middle">
-                        <a>Invite {record.name}</a>
-                        <a>Delete</a>
+                        <a>修改</a>
+                        <a>暂停</a>
                     </Space>
                 ),
             },
@@ -87,7 +88,7 @@ class HomePage extends React.Component<any, any> {
                         <Form onFinish={this.handleSubmit} className="login-form">
                             <Row gutter={20}>
                                 <Col className="gutter-row" span={8}>
-                                    <FormItem label='服务名' name='appName' rules={[{ required: true, message: '请输入：' }]}>
+                                    <FormItem label='服务名' name='appName' rules={[{ required: false, message: '请输入：' }]}>
                                         <Input placeholder="服务名" />
                                     </FormItem>
                                 </Col>
