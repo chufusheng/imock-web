@@ -1,3 +1,15 @@
 /node_modules/*
 /dist/
 /built/
+.idea
+.DS_Store
+.vscode
+*.log
+yarn.lock
+build
+coverage
+server/views
+.happypack
+node_modules
+*.rej
+package-lock.json

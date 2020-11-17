@@ -17,3 +17,12 @@
 .ant-layout-sider-collapsed .ant-menu-submenu-vertical > .ant-menu-submenu-title:after {
   display: none;
 }
+.login-img{
+  width: 110%;
+  height: 42px;
+}
+.text-logo{
+  width: 100%;
+  height: 42px;
+  background-color: aqua;
+}
