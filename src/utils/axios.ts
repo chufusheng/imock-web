@@ -21,14 +21,17 @@ axios.post = (url: string, params?: any): any =>
   axios({
     method: 'post',
     url,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     data: params
   })
 
 // get请求
-axios.get = (url: string, params?: object): any =>
+// eslint-disable-next-line @typescript-eslint/ban-types
+axios.get = (url: string, params?: any): any =>
   axios({
     method: 'get',
     url,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     params
   })
 

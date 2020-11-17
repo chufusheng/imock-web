@@ -1,39 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
 import { Form, Input, Button, Card, Row, Col, Table, Tag, Space } from "antd";
-import Axios from "axios"
+import Axios from "../utils/axios"
 
 
 
-const state = { data: [] };
 
 
-interface AxiosConfig {
-    timeout: number;
-    headers: {
-        'Content-Type': string
-    };
-}
-
-const config: AxiosConfig = {
-    timeout: 600000,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-}
-
-const axios = Axios.create(config)
 
 
 const FormItem = Form.Item;
 
 const style = { background: '#0092ff', padding: '8px 0' };
-
-interface TableProps<T> {
-    dataSource: T[];
-    columns: T[];
-
-}
 
 
 class HomePage extends React.Component<any, any> {
@@ -45,15 +23,15 @@ class HomePage extends React.Component<any, any> {
 
     componentDidMount() {
         void Axios.get('http://127.0.0.1:8003/module/test?a=0')
-        .then(response => {
-            this.setState({ dataList: [{ appName: response.data }] })
-        })
+            .then(response => {
+                this.setState({ dataList: [{ appName: response.data }] })
+            })
     }
 
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     handleSubmit = () => {
-         void Axios.get('http://127.0.0.1:8003/module/test?a=0').then(response => {
+        void Axios.get('http://127.0.0.1:8003/module/test?a=0').then(response => {
             this.setState({ dataList: [{ appName: response.data }] })
         })
     }
