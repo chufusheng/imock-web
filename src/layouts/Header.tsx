@@ -9,7 +9,8 @@ export const Header: React.StatelessComponent<unknown> = () => {
             <Row justify="end" align="middle">
                 <Col span={3}>
                     <Menu mode="horizontal">
-                        <Menu.SubMenu title={<span><UserOutlined />{"User 1"}</span>} >
+                        {/* <Menu.SubMenu title={<span><UserOutlined />{"User 1"}</span>} > */}
+                        <Menu.SubMenu>
                             <Menu.Item key="logOut"><Link to="#" >Logout</Link></Menu.Item>
                         </Menu.SubMenu>
                     </Menu>
