@@ -36,7 +36,7 @@ class Config {
         }
     }
 
-    getAppCode() {
+    getAppCode = () => {
         return this.appCode
     }
 

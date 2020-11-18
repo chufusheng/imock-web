@@ -1,0 +1,13 @@
+appCode: troublemaker-web
+
+# 系统的标题
+pageTitle: Mock服务
+
+
+backendMap:
+  development: http://localhost:8080
+  test: http://localhost:8080
+
+
+server:
+  port: 8080
