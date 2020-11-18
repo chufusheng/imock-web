@@ -33,12 +33,18 @@ class Sidebar extends React.Component<unknown, SidebarState> {
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="2">
-                        <Link to="/todo">
+                        <Link to="/config">
                             <Icons.SnippetsOutlined />
                             <span className="nav-text">配置</span>
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="3">
+                    {/* <Menu.Item key="3">
+                        <Link to="/todo">
+                            <Icons.SnippetsOutlined />
+                            <span className="nav-text">配置2</span>
+                        </Link>
+                    </Menu.Item> */}
+                    <Menu.Item key="4">
                         <Link to="/about">
                             <Icons.FileOutlined />
                             <span className="nav-text">关于</span>
