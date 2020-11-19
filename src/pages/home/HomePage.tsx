@@ -1,22 +1,23 @@
-/* eslint-disable id-blacklist */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Tooltip } from "antd";
-import Axios from "../utils/axios"
+import { Form, Input, Button, Card, Row, Col, Table, Space, Modal } from "antd";
+import Axios from "../../utils/axios"
+import HomeDetail from "./HomeDetail"
 import moment from 'moment'
-import config from "../config/config"
+
+
 
 
 const FormItem = Form.Item;
 
-class ConfigPage extends React.Component<any, any> {
+class HomePage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        this.state = { dataList: [] };
+        this.state = { dataList: [], visible: false };
     }
 
     componentDidMount() {
@@ -26,8 +27,29 @@ class ConfigPage extends React.Component<any, any> {
     }
 
 
+    showModal = (e: any) => {
+        window.console.log(JSON.stringify(e))
+        this.setState({
+            visible: true,
+        });
+    };
+
+    handleOk = (e: any) => {
+        window.console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
+    handleCancel = (e: any) => {
+        window.console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
+
     handleSubmit = (value: any) => {
-        void Axios.post('http://127.0.0.1:8003/config/get/list', value).then(response => {
+        void Axios.post('http://127.0.0.1:8003/module/get/list', value).then(response => {
             window.console.log(JSON.stringify(value))
             this.setState({ dataList: response.data.data })
         })
@@ -52,73 +74,33 @@ class ConfigPage extends React.Component<any, any> {
                 dataIndex: 'environment',
             }, {
                 key: 3,
-                title: 'Mock类',
-                dataIndex: 'mockClass',
-                ellipsis: {
-                    showTitle: false,
-                },
-                render: (mockClass: any) => (
-                    <Tooltip placement="topLeft" title={mockClass}>
-                        {mockClass}
-                    </Tooltip>
-                ),
+                title: 'IP',
+                dataIndex: 'ip',
             }, {
                 key: 4,
-                title: '方法',
-                dataIndex: 'mockMethod',
+                title: '端口',
+                dataIndex: 'port',
             }, {
                 key: 5,
-                title: '规则',
-                dataIndex: 'ruleConfig',
+                title: '版本',
+                dataIndex: 'version',
             }, {
                 key: 6,
-                title: '模拟返回',
-                dataIndex: 'returnObj',
-                ellipsis: {
-                    showTitle: false,
-                },
-                render: (returnObj: any) => (
-                    <Tooltip placement="topLeft" title={returnObj}>
-                        {returnObj}
-                    </Tooltip>
-                ),
-            }, {
-                key: 7,
-                title: '是否异常',
-                dataIndex: 'isThrows',
-                render: (text: any) => {
-                    if (text) {
-                        return <p>是</p>
-                    } else {
-                        return <p>否</p>
-                    }
-                }
-            },
-            {
-                key: 8,
                 title: '更新时间',
                 dataIndex: 'updateTime',
-                render:(updateTime:any)=>(
+                render: (updateTime: any) => (
                     moment(updateTime).format('YYYY-MM-DD HH:mm:ss')
                 )
-            },
-            {
-                key: 9,
+            }, {
+                key: 7,
                 title: '状态',
-                dataIndex: 'isUsable',
-                render: (text: any) => {
-                    if (text) {
-                        return <p>打开</p>
-                    } else {
-                        return <p>关闭</p>
-                    }
-                }
+                dataIndex: 'status',
             }, {
                 title: '操作',
                 key: 'action',
-                render: (text: any, record: { name: React.ReactNode; }) => (
+                render: (text: any, record: any) => (
                     <Space size="middle">
-                        <a>修改</a>
+                        <Button type="primary" onClick={() => this.showModal(record)}>修改</Button>
                         <a>暂停</a>
                     </Space>
                 ),
@@ -154,9 +136,9 @@ class ConfigPage extends React.Component<any, any> {
                 </Card>
 
                 <Card bordered title="" style={{ margin: "16px 16px" }}>
-                    <Table dataSource={this.state.dataList} columns={columns} pagination={{ pageSize: 10 }} />
+                    <Table dataSource={this.state.dataList} columns={columns} />
                 </Card>
-
+                <HomeDetail visible={this.state.visible} handleCancel={this.handleCancel} handleOk={this.handleOk} />
             </div>
 
         );
@@ -165,4 +147,4 @@ class ConfigPage extends React.Component<any, any> {
 
 
 
-export default ConfigPage;
+export default HomePage;
