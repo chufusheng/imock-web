@@ -5,6 +5,9 @@
 import * as React from "react";
 import { Form, Input, Button, Card, Row, Col, Table, Tag, Space } from "antd";
 import Axios from "../utils/axios"
+import moment from 'moment'
+
+
 import config from "../config/config"
 
 
@@ -24,7 +27,7 @@ class HomePage extends React.Component<any, any> {
     }
 
 
-    handleSubmit = (value:any) => {
+    handleSubmit = (value: any) => {
         void Axios.post('http://127.0.0.1:8003/module/get/list', value).then(response => {
             window.console.log(JSON.stringify(value))
             this.setState({ dataList: response.data.data })
@@ -34,6 +37,11 @@ class HomePage extends React.Component<any, any> {
     public render(): JSX.Element {
 
         const columns = [
+            {
+                key: 0,
+                title: 'Id',
+                dataIndex: 'id',
+            },
             {
                 key: 1,
                 title: '服务名',
@@ -57,6 +65,13 @@ class HomePage extends React.Component<any, any> {
                 dataIndex: 'version',
             }, {
                 key: 6,
+                title: '更新时间',
+                dataIndex: 'updateTime',
+                render:(updateTime:any)=>(
+                    moment(updateTime).format('YYYY-MM-DD HH:mm:ss')
+                )
+            }, {
+                key: 7,
                 title: '状态',
                 dataIndex: 'status',
             }, {

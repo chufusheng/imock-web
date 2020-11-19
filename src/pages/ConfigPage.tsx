@@ -6,6 +6,7 @@
 import * as React from "react";
 import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Tooltip } from "antd";
 import Axios from "../utils/axios"
+import moment from 'moment'
 import config from "../config/config"
 
 
@@ -36,6 +37,11 @@ class ConfigPage extends React.Component<any, any> {
 
         const columns = [
             {
+                key: 0,
+                title: 'Id',
+                dataIndex: 'id',
+            },
+            {
                 key: 1,
                 title: '服务名',
                 dataIndex: 'appName',
@@ -55,7 +61,8 @@ class ConfigPage extends React.Component<any, any> {
                     <Tooltip placement="topLeft" title={mockClass}>
                         {mockClass}
                     </Tooltip>
-                ),            }, {
+                ),
+            }, {
                 key: 4,
                 title: '方法',
                 dataIndex: 'mockMethod',
@@ -91,6 +98,9 @@ class ConfigPage extends React.Component<any, any> {
                 key: 8,
                 title: '更新时间',
                 dataIndex: 'updateTime',
+                render:(updateTime:any)=>(
+                    moment(updateTime).format('YYYY-MM-DD HH:mm:ss')
+                )
             },
             {
                 key: 9,
@@ -144,7 +154,7 @@ class ConfigPage extends React.Component<any, any> {
                 </Card>
 
                 <Card bordered title="" style={{ margin: "16px 16px" }}>
-                    <Table dataSource={this.state.dataList} columns={columns} scroll={{ x: 1500, y: 300 }} />
+                    <Table dataSource={this.state.dataList} columns={columns} pagination={{ pageSize: 10 }} />
                 </Card>
 
             </div>

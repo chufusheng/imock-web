@@ -22,7 +22,7 @@ class Sidebar extends React.Component<unknown, SidebarState> {
         return (
             <Layout.Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
                 <div className="ant-layout-logo" >
-                    {/* <a><img className="login-img" src="https://yangtuo.oss-cn-hangzhou.aliyuncs.com/202011/material/111111050620837uAH_946x258.png" /></a> */}
+                    {/* <a><img className="logo-img" src="../../logo.svg" /></a> */}
                     <div className='text-logo'>troublemaker</div>
                 </div>
                 <Menu theme="dark" mode={this.state.mode} defaultSelectedKeys={["1"]}>
