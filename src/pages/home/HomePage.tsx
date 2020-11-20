@@ -5,7 +5,6 @@
 import * as React from "react";
 import { Form, Input, Button, Card, Row, Col, Table, Space, Modal } from "antd";
 import Axios from "../../utils/axios"
-import HomeDetail from "./HomeDetail"
 import moment from 'moment'
 
 
@@ -27,26 +26,6 @@ class HomePage extends React.Component<any, any> {
     }
 
 
-    showModal = (e: any) => {
-        window.console.log(JSON.stringify(e))
-        this.setState({
-            visible: true,
-        });
-    };
-
-    handleOk = (e: any) => {
-        window.console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
-
-    handleCancel = (e: any) => {
-        window.console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
 
     handleSubmit = (value: any) => {
         void Axios.post('http://127.0.0.1:8003/module/get/list', value).then(response => {
@@ -62,6 +41,7 @@ class HomePage extends React.Component<any, any> {
                 key: 0,
                 title: 'Id',
                 dataIndex: 'id',
+                width: 80,
             },
             {
                 key: 1,
@@ -100,7 +80,7 @@ class HomePage extends React.Component<any, any> {
                 key: 'action',
                 render: (text: any, record: any) => (
                     <Space size="middle">
-                        <Button type="primary" onClick={() => this.showModal(record)}>修改</Button>
+                        {/* <Button type="primary" onClick={() => this.showModal(record)}>修改</Button> */}
                         <a>暂停</a>
                     </Space>
                 ),
@@ -136,9 +116,8 @@ class HomePage extends React.Component<any, any> {
                 </Card>
 
                 <Card bordered title="" style={{ margin: "16px 16px" }}>
-                    <Table dataSource={this.state.dataList} columns={columns} />
+                    <Table dataSource={this.state.dataList} pagination={{ pageSize: 10 }} columns={columns} bordered />
                 </Card>
-                <HomeDetail visible={this.state.visible} handleCancel={this.handleCancel} handleOk={this.handleOk} />
             </div>
 
         );

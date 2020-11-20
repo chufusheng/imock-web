@@ -8,6 +8,9 @@ import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Tooltip } from 
 import Axios from "../../utils/axios"
 import moment from 'moment'
 
+import ConfigDetail from "./ConfigDetail"
+
+
 
 const FormItem = Form.Item;
 
@@ -15,7 +18,7 @@ class ConfigPage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        this.state = { dataList: [] };
+        this.state = { dataList: [], visible: false, detailData: {} };
     }
 
     componentDidMount() {
@@ -24,9 +27,24 @@ class ConfigPage extends React.Component<any, any> {
         this.handleSubmit({})
     }
 
+    showModal = (e: any) => {
+        // window.console.log(JSON.stringify(e))
+        this.setState({
+            visible: true,
+            detailData:e
+        });
+    };
+
+
+    handleCancel = (e: any) => {
+        window.console.log(e);
+        this.setState({
+            visible: false,
+        });
+    };
 
     handleSubmit = (value: any) => {
-        void Axios.post('http://127.0.0.1:8003/config/get/list', value).then(response => {
+        void Axios.post('http://127.0.0.1:8003/config/get/list', value).then((response: { data: { data: any; }; }) => {
             window.console.log(JSON.stringify(value))
             this.setState({ dataList: response.data.data })
         })
@@ -39,6 +57,7 @@ class ConfigPage extends React.Component<any, any> {
                 key: 0,
                 title: 'Id',
                 dataIndex: 'id',
+                width: 80,
             },
             {
                 key: 1,
@@ -53,6 +72,7 @@ class ConfigPage extends React.Component<any, any> {
                 key: 3,
                 title: 'Mock类',
                 dataIndex: 'mockClass',
+                width: 230,
                 ellipsis: {
                     showTitle: false,
                 },
@@ -69,10 +89,12 @@ class ConfigPage extends React.Component<any, any> {
                 key: 5,
                 title: '规则',
                 dataIndex: 'ruleConfig',
+                width: 100,
             }, {
                 key: 6,
                 title: '模拟返回',
                 dataIndex: 'returnObj',
+                width: 230,
                 ellipsis: {
                     showTitle: false,
                 },
@@ -85,6 +107,8 @@ class ConfigPage extends React.Component<any, any> {
                 key: 7,
                 title: '是否异常',
                 dataIndex: 'isThrows',
+                align: 'center',
+                width: 100,
                 render: (text: any) => {
                     if (text) {
                         return <p>是</p>
@@ -97,7 +121,8 @@ class ConfigPage extends React.Component<any, any> {
                 key: 8,
                 title: '更新时间',
                 dataIndex: 'updateTime',
-                render:(updateTime:any)=>(
+                width: 230,
+                render: (updateTime: any) => (
                     moment(updateTime).format('YYYY-MM-DD HH:mm:ss')
                 )
             },
@@ -105,6 +130,9 @@ class ConfigPage extends React.Component<any, any> {
                 key: 9,
                 title: '状态',
                 dataIndex: 'isUsable',
+                align: 'center',
+
+                width: 80,
                 render: (text: any) => {
                     if (text) {
                         return <p>打开</p>
@@ -115,9 +143,10 @@ class ConfigPage extends React.Component<any, any> {
             }, {
                 title: '操作',
                 key: 'action',
+                fixed: 'right',
                 render: (text: any, record: { name: React.ReactNode; }) => (
                     <Space size="middle">
-                        <a>修改</a>
+                        <a onClick={() => this.showModal(record)}>修改</a>
                         <a>暂停</a>
                     </Space>
                 ),
@@ -128,34 +157,33 @@ class ConfigPage extends React.Component<any, any> {
         return (
             <div>
                 <Card style={{ margin: "16px 16px" }}>
-
-                    <React.Fragment>
-
-                        <Form onFinish={this.handleSubmit} className="login-form">
-                            <Row gutter={20}>
-                                <Col className="gutter-row" span={8}>
-                                    <FormItem label='服务名' name='appName' rules={[{ required: false, message: '请输入：' }]}>
-                                        <Input placeholder="服务名" />
-                                    </FormItem>
-                                </Col>
-                                <Col className="gutter-row" span={8}>
-                                    <FormItem label='环境' name='environment' rules={[{ required: false, message: '请输入：' }]}>
-                                        <Input placeholder="环境" />
-                                    </FormItem>
-                                </Col>
-                                <Col className="gutter-row" span={4}>
-                                    <Button type="primary" htmlType="submit">查询</Button>
-                                </Col>
-                            </Row>
-
-                        </Form>
-                    </React.Fragment>
+                    <Form onFinish={this.handleSubmit} className="login-form">
+                        <Row gutter={20}>
+                            <Col className="gutter-row" span={8}>
+                                <FormItem label='服务名' name='appName' rules={[{ required: false, message: '请输入：' }]}>
+                                    <Input placeholder="服务名" />
+                                </FormItem>
+                            </Col>
+                            <Col className="gutter-row" span={8}>
+                                <FormItem label='环境' name='environment' rules={[{ required: false, message: '请输入：' }]}>
+                                    <Input placeholder="环境" />
+                                </FormItem>
+                            </Col>
+                            <Col className="gutter-row" span={2}>
+                                <Button type="primary" htmlType="submit">查询</Button>
+                            </Col>
+                            <Col className="gutter-row" span={4}>
+                                <Button type="primary" onClick={this.showModal}>新增</Button>
+                            </Col>
+                        </Row>
+                    </Form>
                 </Card>
 
                 <Card bordered title="" style={{ margin: "16px 16px" }}>
-                    <Table dataSource={this.state.dataList} columns={columns} pagination={{ pageSize: 10 }} />
+                    <Table dataSource={this.state.dataList} columns={columns} pagination={{ pageSize: 10 }} scroll={{ x: 1500 }} bordered />
                 </Card>
 
+                <ConfigDetail visible={this.state.visible} handleCancel={this.handleCancel} detailData={this.state.detailData} />
             </div>
 
         );

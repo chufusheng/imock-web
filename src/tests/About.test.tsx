@@ -11,7 +11,7 @@ import * as React from "react";
 //     });
 // });
 import {shallow} from "enzyme";
-import AboutPage from "../pages/AboutPage";
+import AboutPage from "../pages/about/AboutPage";
 
 describe("<AboutPage />", () => {
     it("should render without throwing an error", () => {
