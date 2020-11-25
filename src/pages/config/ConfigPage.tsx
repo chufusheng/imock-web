@@ -15,6 +15,9 @@ import ConfigDetail from "./ConfigDetail"
 const FormItem = Form.Item;
 
 class ConfigPage extends React.Component<any, any> {
+    detailData(arg0: string, detailData: any) {
+        throw new Error("Method not implemented.");
+    }
 
     constructor(props: any) {
         super(props);
@@ -22,30 +25,27 @@ class ConfigPage extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        // const configa = new config();
-        // window.console.log("111111", configa.getAppCode)
-        this.handleSubmit({})
+        this.getPagesList({})
     }
 
-    showModal = (e: any) => {
-        // window.console.log(JSON.stringify(e))
+    showModal = (value: any) => {
         this.setState({
             visible: true,
-            detailData:e
+            detailData: value
         });
+
     };
 
 
     handleCancel = (e: any) => {
-        window.console.log(e);
+        // window.console.log(e);
         this.setState({
             visible: false,
         });
     };
 
-    handleSubmit = (value: any) => {
+    getPagesList = (value: any) => {
         void Axios.post('http://127.0.0.1:8003/config/get/list', value).then((response: { data: { data: any; }; }) => {
-            window.console.log(JSON.stringify(value))
             this.setState({ dataList: response.data.data })
         })
     }
@@ -144,7 +144,7 @@ class ConfigPage extends React.Component<any, any> {
                 title: '操作',
                 key: 'action',
                 fixed: 'right',
-                render: (text: any, record: { name: React.ReactNode; }) => (
+                render: (text: any, record: JSON) => (
                     <Space size="middle">
                         <a onClick={() => this.showModal(record)}>修改</a>
                         <a>暂停</a>
@@ -157,7 +157,7 @@ class ConfigPage extends React.Component<any, any> {
         return (
             <div>
                 <Card style={{ margin: "16px 16px" }}>
-                    <Form onFinish={this.handleSubmit} className="login-form">
+                    <Form onFinish={this.getPagesList} className="login-form">
                         <Row gutter={20}>
                             <Col className="gutter-row" span={8}>
                                 <FormItem label='服务名' name='appName' rules={[{ required: false, message: '请输入：' }]}>
@@ -183,7 +183,7 @@ class ConfigPage extends React.Component<any, any> {
                     <Table dataSource={this.state.dataList} columns={columns} pagination={{ pageSize: 10 }} scroll={{ x: 1500 }} bordered />
                 </Card>
 
-                <ConfigDetail visible={this.state.visible} handleCancel={this.handleCancel} detailData={this.state.detailData} />
+                <ConfigDetail visible={this.state.visible} handleCancel={this.handleCancel} detailData={this.state.detailData} getPages={this.getPagesList} />
             </div>
 
         );
