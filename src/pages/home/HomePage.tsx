@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Space, Modal } from "antd";
+import { Form, Input, Button, Card, Row, Col, Table, Space, message } from "antd";
 import Axios from "../../utils/axios"
 import moment from 'moment'
+import config from "../../config/config"
+import HomeDetail from "./HomeDetail"
 
 
 
@@ -14,25 +18,56 @@ const FormItem = Form.Item;
 
 class HomePage extends React.Component<any, any> {
 
+    servicePath = config.backendMap.test != undefined ? config.backendMap.test : ""
+
     constructor(props: any) {
         super(props);
-        this.state = { dataList: [], visible: false };
+        this.state = { dataList: [], visible: false, moduleInfo: {} };
     }
 
     componentDidMount() {
-        // const configa = new config();
-        // window.console.log("111111", configa.getAppCode)
         this.handleSubmit({})
     }
 
 
 
     handleSubmit = (value: any) => {
-        void Axios.post('http://127.0.0.1:8003/module/get/list', value).then(response => {
-            window.console.log(JSON.stringify(value))
+        void Axios.post(this.servicePath + '/module/get/list', value).then((response: { data: { data: any; }; }) => {
             this.setState({ dataList: response.data.data })
         })
     }
+
+    onActiveOrFrozen = (value: any) => {
+        void Axios.post(this.servicePath + '/module/frozenOrActive', value).then((response: { data: { success: any; }; }) => {
+            if (response.data.success) {
+                message.success(value.status == "ACTIVE" ? "冻结成功" : "运行成功");
+            } else {
+                message.error(value.status == "ACTIVE" ? "冻结失败" : "运行失败");
+            }
+        })
+    }
+
+    onUpdata = (value: any) => {
+        window.console.log("jdfiasjklfasjklfjasjfasjkdjfl")
+        void Axios.post(this.servicePath + '/module/reload', value).then((response: { data: { success: any; }; }) => {
+            if (response.data.success) {
+                message.success("更新成功");
+            } else {
+                message.error("更新失败");
+            }
+        })
+    }
+
+    showLog = (value: any) => {
+        this.setState({ moduleInfo: value, visible: true })
+    }
+
+    handleCancel = (e: any) => {
+        this.setState({
+            visible: false,
+        });
+    };
+
 
     public render(): JSX.Element {
 
@@ -75,15 +110,31 @@ class HomePage extends React.Component<any, any> {
                 key: 7,
                 title: '状态',
                 dataIndex: 'status',
+                render: (text: any) => {
+                    if (text == "ACTIVE") {
+                        return <p style={{ color: '#24d34a' }}>运行中</p>
+                    } else {
+                        return <p style={{ color: '#F5222E' }}>已冻结</p>
+                    }
+                }
             }, {
                 title: '操作',
                 key: 'action',
-                render: (text: any, record: any) => (
-                    <Space size="middle">
-                        {/* <Button type="primary" onClick={() => this.showModal(record)}>修改</Button> */}
-                        <a>暂停</a>
-                    </Space>
-                ),
+                align: 'center',
+                render: (text: any, record: JSON) => {
+                    let refuse = "";
+                    if (record.status == "ACTIVE") {
+                        refuse = "冻结"
+                    } else {
+                        refuse = "运行"
+                    }
+                    return (
+                        <Space size="middle">
+                            <a onClick={() => this.onActiveOrFrozen(record)}>{refuse}</a>
+                            <a onClick={() => this.onUpdata(record)}>更新配置</a>
+                            <a onClick={() => this.showLog(record)}>日志</a>
+                        </Space>)
+                },
             },
         ];
 
@@ -118,6 +169,8 @@ class HomePage extends React.Component<any, any> {
                 <Card bordered title="" style={{ margin: "16px 16px" }}>
                     <Table dataSource={this.state.dataList} pagination={{ pageSize: 10 }} columns={columns} bordered />
                 </Card>
+
+                <HomeDetail visible={this.state.visible} handleCancel={this.handleCancel} moduleInfo={this.state.moduleInfo}></HomeDetail>
             </div>
 
         );

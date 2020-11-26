@@ -1,23 +1,25 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable id-blacklist */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Tooltip } from "antd";
+import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Tooltip, message } from "antd";
 import Axios from "../../utils/axios"
 import moment from 'moment'
 
 import ConfigDetail from "./ConfigDetail"
+import config from "../../config/config"
 
 
 
 const FormItem = Form.Item;
 
 class ConfigPage extends React.Component<any, any> {
-    detailData(arg0: string, detailData: any) {
-        throw new Error("Method not implemented.");
-    }
+
+    servicePath = config.backendMap.test != undefined ? config.backendMap.test : ""
 
     constructor(props: any) {
         super(props);
@@ -36,6 +38,18 @@ class ConfigPage extends React.Component<any, any> {
 
     };
 
+    stopAndOpen = (value: any) => {
+        const data = { "id": value.id, "isUsable": value.isUsable }
+        void Axios.post(this.servicePath + '/config/status', data).then((response: any) => {
+            if (response.data.success) {
+                message.success(value.isUsable ? "暂停成功" : "打开成功");
+                this.getPagesList({})
+            } else {
+                message.error(value.isUsable ? "暂停失败" : "打开失败");
+            }
+        })
+
+    }
 
     handleCancel = (e: any) => {
         // window.console.log(e);
@@ -45,7 +59,7 @@ class ConfigPage extends React.Component<any, any> {
     };
 
     getPagesList = (value: any) => {
-        void Axios.post('http://127.0.0.1:8003/config/get/list', value).then((response: { data: { data: any; }; }) => {
+        void Axios.post(this.servicePath + '/config/get/list', value).then((response: { data: { data: any; }; }) => {
             this.setState({ dataList: response.data.data })
         })
     }
@@ -135,21 +149,28 @@ class ConfigPage extends React.Component<any, any> {
                 width: 80,
                 render: (text: any) => {
                     if (text) {
-                        return <p>打开</p>
+                        return <p style={{ color: '#24d34a' }}>打开</p>
                     } else {
-                        return <p>关闭</p>
+                        return <p style={{ color: '#F5222E' }}>暂停</p>
                     }
                 }
             }, {
                 title: '操作',
                 key: 'action',
                 fixed: 'right',
-                render: (text: any, record: JSON) => (
-                    <Space size="middle">
-                        <a onClick={() => this.showModal(record)}>修改</a>
-                        <a>暂停</a>
-                    </Space>
-                ),
+                render: (text: any, record: JSON) => {
+                    let refuse = "";
+                    if (record.isUsable) {
+                        refuse = "暂停"
+                    } else {
+                        refuse = "打开"
+                    }
+                    return (
+                        <Space size="middle">
+                            <a onClick={() => this.showModal(record)}>修改</a>
+                            <a onClick={() => this.stopAndOpen(record)}>{refuse}</a>
+                        </Space>)
+                },
             },
         ];
 

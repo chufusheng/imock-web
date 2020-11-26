@@ -20,14 +20,14 @@ module.exports = {
     output: {
         filename: 'hotloader.js',
         // the output bundle
-        path: resolve(__dirname, 'dist'), 
+        path: resolve(__dirname, 'dist'),
         publicPath: '/'
         // necessary for HMR to know where to load the hot update chunks
     },
     devtool: 'inline-source-map',
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".json", ".svg", ".md"]
     },
     devServer: {
         port: '8080',
@@ -46,68 +46,66 @@ module.exports = {
     module: {
         rules: [
             {
-                enforce: "pre",                
-                test: /\.(ts|tsx)?$/, 
+                enforce: "pre",
+                test: /\.(ts|tsx)?$/,
                 loader: 'eslint-loader',
                 exclude: [resolve(__dirname, "node_modules")],
-            },             
-            { 
-                test: /\.(ts|tsx)?$/, 
+            },
+            {
+                test: /\.(ts|tsx)?$/,
                 use: [
                     {
                         loader: 'ts-loader',
                         options: {
                             transpileOnly: true,
                             getCustomTransformers: () => ({
-                              before: [ tsImportPluginFactory({
-                                libraryName: 'antd',
-                                libraryDirectory: 'es',
-                                style: 'css',
-                              }) ]
+                                before: [tsImportPluginFactory({
+                                    libraryName: 'antd',
+                                    libraryDirectory: 'es',
+                                    style: 'css',
+                                })]
                             }),
                             compilerOptions: {
-                              module: 'es2015'
+                                module: 'es2015'
                             }
                         },
-                    }, 
+                    },
                 ],
-                exclude: [resolve(__dirname, "node_modules")],                
+                exclude: [resolve(__dirname, "node_modules")],
             },
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             {
-                test:/\.css$/,
+                test: /\.css$/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                          // only enable hot in development
-                          hmr: true,
-                          // if hmr does not work, this is a forceful method.
-                          reloadAll: true,
+                            // only enable hot in development
+                            hmr: true,
+                            // if hmr does not work, this is a forceful method.
+                            reloadAll: true,
                         },
                     },
                     "css-loader"
-                ]  
+                ]
             },
             { test: /\.png$/, loader: "url-loader?limit=100000" },
             { test: /\.jpg$/, loader: "file-loader" },
             { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
             { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' },
-            { test: /\.md$/, loader: 'babel!react-markdown'}       
-        ]
+            { test: /\.md$/, loader: 'babel!react-markdown' }]
     },
     plugins: [
         new MiniCssExtractPlugin({
             filename: "style.css",
             chunkFilename: "[id].css"
-          }),
+        }),
         new webpack.HotModuleReplacementPlugin(),
         // enable HMR globally
         new webpack.NamedModulesPlugin(),
         // prints more readable module names in the browser console on HMR updates
-        new HtmlWebpackPlugin({template: resolve(__dirname, 'src/index.html')}),
+        new HtmlWebpackPlugin({ template: resolve(__dirname, 'src/index.html') }),
         // inject <script> in html file. 
     ],
 };

@@ -4,6 +4,8 @@ import * as Icons from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
+
+
 interface SidebarState {
     collapsed: boolean;
     mode: "vertical" | "inline" | "horizontal" | undefined;
@@ -22,8 +24,8 @@ class Sidebar extends React.Component<unknown, SidebarState> {
         return (
             <Layout.Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
                 <div className="ant-layout-logo" >
-                    {/* <a><img className="logo-img" src="../../logo.svg" /></a> */}
-                    <div className='text-logo'>troublemaker</div>
+                    {/* <img className="logo-img" src="./logo.svg" /> */}
+                    {/* <div className='text-logo'>troublemaker</div> */}
                 </div>
                 <Menu theme="dark" mode={this.state.mode} defaultSelectedKeys={["1"]}>
                     <Menu.Item key="1">
@@ -54,6 +56,8 @@ class Sidebar extends React.Component<unknown, SidebarState> {
             </Layout.Sider>
         );
     }
+
+
 
     private toggle = () => {
         this.setState({
