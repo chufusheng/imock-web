@@ -11,6 +11,7 @@ interface SidebarState {
     mode: "vertical" | "inline" | "horizontal" | undefined;
 }
 
+
 class Sidebar extends React.Component<unknown, SidebarState> {
     constructor(props: unknown) {
         super(props);
@@ -20,11 +21,12 @@ class Sidebar extends React.Component<unknown, SidebarState> {
         };
     }
 
+
     public render(): JSX.Element {
         return (
             <Layout.Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
                 <div className="ant-layout-logo" >
-                    {/* <img className="logo-img" src="./logo.svg" /> */}
+                    {/* <img className="logo-img" src={aaa} />  */}
                     {/* <div className='text-logo'>troublemaker</div> */}
                 </div>
                 <Menu theme="dark" mode={this.state.mode} defaultSelectedKeys={["1"]}>

@@ -1,13 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import * as React from "react";
 import { Card } from "antd";
 import ReactMarkdown from "react-markdown"
-import { readFileSync } from 'fs'
+
+import a from './test'
+
+
+const urlInfo = './test.log';
 
 
 
 const AboutPage = (props: any) => {
+
+
+    // React.useEffect(() => {
+    //     readTxt()
+    // }, [props])
+
 
     const input = '### 标题';
     return (

@@ -85,13 +85,13 @@ const ConfigDetail = (props: any) => {
     }
 
     const handleOk = () => {
-
+        window.console.log("isThrowsObj", isThrowsObj)
         const returnData = form.getFieldsValue()
         returnData.id = isUpdata() ? props.detailData.id : null
         returnData.returnObj = JSON.stringify(resObj)
-        returnData.isThows=isThrowsObj
+        returnData.isThrows = isThrowsObj
 
-        void Axios.post(servicePath+'/config/save', returnData).then(response => {
+        void Axios.post(servicePath + '/config/save', returnData).then(response => {
             if (response.data.success) {
                 props.getPages({})
                 void message.info("保存成功")

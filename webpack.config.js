@@ -91,10 +91,12 @@ module.exports = {
             },
             { test: /\.png$/, loader: "url-loader?limit=100000" },
             { test: /\.jpg$/, loader: "file-loader" },
-            { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
-            { test: /\.md$/, loader: 'babel!react-markdown' }]
+            {
+                test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+                loader: "file-loader?name=assets/[name].[ext]"
+            },
+            { test: /\.md$/, loader: 'babel!react-markdown' }
+        ]
     },
     plugins: [
         new MiniCssExtractPlugin({
@@ -103,7 +105,7 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin(),
         // enable HMR globally
-        new webpack.NamedModulesPlugin(),
+        // new webpack.NamedModulesPlugin(),
         // prints more readable module names in the browser console on HMR updates
         new HtmlWebpackPlugin({ template: resolve(__dirname, 'src/index.html') }),
         // inject <script> in html file. 

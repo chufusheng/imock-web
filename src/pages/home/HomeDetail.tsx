@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable id-blacklist */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -5,21 +6,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Modal } from "antd";
+import { Modal } from "antd";
 import Axios from "../../utils/axios"
-import moment from 'moment'
 import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/eclipse.css';
 import 'codemirror/theme/monokai.css';
+
+import config from "../../config/config"
+
 
 
 
 
 const HomeDetail = (props: any) => {
 
-    const [logInfo, setLog] = React.useState<any>("")
+    const servicePath = config.backendMap.test != undefined ? config.backendMap.test : ""
 
+    const [logInfo, setLog] = React.useState<any>("")
 
     React.useEffect(() => {
         getLog(props.moduleInfo)
@@ -29,10 +33,9 @@ const HomeDetail = (props: any) => {
         getLog(props.moduleInfo)
     };
 
-
     const getLog = (value: any) => {
         window.console.log("value", value)
-        void Axios.post('http://127.0.0.1:8003/module/log', value).then(response => {
+        void Axios.post(servicePath + '/module/log', value).then(response => {
             setLog(response.data)
         })
     }
