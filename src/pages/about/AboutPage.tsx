@@ -3,8 +3,6 @@ import * as React from "react";
 import { Card } from "antd";
 import ReactMarkdown from "react-markdown"
 
-import a from './test'
-
 
 const urlInfo = './test.log';
 

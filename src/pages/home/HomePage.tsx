@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -5,16 +6,17 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Space, message } from "antd";
+import { Form, Input, Button, Card, Row, Col, Table, Select, Space, message } from "antd";
 import Axios from "../../utils/axios"
 import moment from 'moment'
 import config from "../../config/config"
-import HomeDetail from "./HomeDetail"
+import LogDetail from "./LogDetail"
 
 
 
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 class HomePage extends React.Component<any, any> {
 
@@ -22,11 +24,12 @@ class HomePage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        this.state = { dataList: [], visible: false, moduleInfo: {} };
+        this.state = { dataList: [], visible: false, moduleInfo: {}, appNameOption: [], appEnvOption: [] };
     }
 
     componentDidMount() {
         this.handleSubmit({})
+        this.getAppNameList()
     }
 
 
@@ -48,7 +51,6 @@ class HomePage extends React.Component<any, any> {
     }
 
     onUpdata = (value: any) => {
-        window.console.log("jdfiasjklfasjklfjasjfasjkdjfl")
         void Axios.post(this.servicePath + '/module/reload', value).then((response: { data: { success: any; }; }) => {
             if (response.data.success) {
                 message.success("更新成功");
@@ -67,6 +69,32 @@ class HomePage extends React.Component<any, any> {
             visible: false,
         });
     };
+
+    getAppNameList = () => {
+        void Axios.get(this.servicePath + '/module/get/appName/list').then(response => {
+            if (response.status == 200) {
+                const children = [];
+                for (const a in response.data) {
+                    children.push(<Option value={response.data[a]}>{response.data[a]}</Option>);
+                }
+                this.setState({ appNameOption: children })
+            }
+        })
+
+    }
+
+    onChangeAppName = (value: string) => {
+        void Axios.get(this.servicePath + '/module/get/appEnv/list?appName=' + value).then(response => {
+            if (response.status == 200) {
+                const children = [];
+                for (const i in response.data) {
+                    children.push(<Option value={response.data[i]}>{response.data[i]}</Option>);
+                }
+                this.setState({ appEnvOption: children })
+            }
+        })
+
+    }
 
 
     public render(): JSX.Element {
@@ -149,12 +177,21 @@ class HomePage extends React.Component<any, any> {
                             <Row gutter={20}>
                                 <Col className="gutter-row" span={8}>
                                     <FormItem label='服务名' name='appName' rules={[{ required: false, message: '请输入：' }]}>
-                                        <Input placeholder="服务名" />
+                                        <Select
+                                            showSearch
+                                            allowClear
+                                            optionFilterProp="children"
+                                            onChange={this.onChangeAppName}
+                                        >{this.state.appNameOption}</Select>
                                     </FormItem>
                                 </Col>
                                 <Col className="gutter-row" span={8}>
                                     <FormItem label='环境' name='environment' rules={[{ required: false, message: '请输入：' }]}>
-                                        <Input placeholder="环境" />
+                                        <Select
+                                            showSearch
+                                            allowClear
+                                            optionFilterProp="children"
+                                        >{this.state.appEnvOption}</Select>
                                     </FormItem>
                                 </Col>
                                 <Col className="gutter-row" span={4}>
@@ -170,7 +207,7 @@ class HomePage extends React.Component<any, any> {
                     <Table dataSource={this.state.dataList} pagination={{ pageSize: 10 }} columns={columns} bordered />
                 </Card>
 
-                <HomeDetail visible={this.state.visible} handleCancel={this.handleCancel} moduleInfo={this.state.moduleInfo}></HomeDetail>
+                <LogDetail visible={this.state.visible} handleCancel={this.handleCancel} moduleInfo={this.state.moduleInfo} />
             </div>
 
         );

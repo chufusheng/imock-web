@@ -1,3 +1,6 @@
+/* eslint-disable prefer-const */
+/* eslint-disable guard-for-in */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable eqeqeq */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable id-blacklist */
@@ -6,7 +9,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Tag, Space, Tooltip, message } from "antd";
+import { Form, Input, Button, Card, Row, Col, Table, Tag, Select, Space, Tooltip, message } from "antd";
 import Axios from "../../utils/axios"
 import moment from 'moment'
 
@@ -16,6 +19,7 @@ import config from "../../config/config"
 
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 class ConfigPage extends React.Component<any, any> {
 
@@ -23,11 +27,12 @@ class ConfigPage extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        this.state = { dataList: [], visible: false, detailData: {} };
+        this.state = { dataList: [], visible: false, detailData: {}, appNameOption: [], appEnvOption: [] };
     }
 
     componentDidMount() {
         this.getPagesList({})
+        this.getAppNameList()
     }
 
     showModal = (value: any) => {
@@ -51,6 +56,7 @@ class ConfigPage extends React.Component<any, any> {
 
     }
 
+
     handleCancel = (e: any) => {
         // window.console.log(e);
         this.setState({
@@ -63,6 +69,34 @@ class ConfigPage extends React.Component<any, any> {
             this.setState({ dataList: response.data.data })
         })
     }
+
+
+    getAppNameList = () => {
+        void Axios.get(this.servicePath + '/module/get/appName/list').then(response => {
+            if (response.status == 200) {
+                const children = [];
+                for (const a in response.data) {
+                    children.push(<Option value={response.data[a]}>{response.data[a]}</Option>);
+                }
+                this.setState({ appNameOption: children })
+            }
+        })
+
+    }
+
+    onChangeAppName = (value: string) => {
+        void Axios.get(this.servicePath + '/module/get/appEnv/list?appName=' + value).then(response => {
+            if (response.status == 200) {
+                const children = [];
+                for (const i in response.data) {
+                    children.push(<Option value={response.data[i]}>{response.data[i]}</Option>);
+                }
+                this.setState({ appEnvOption: children })
+            }
+        })
+
+    }
+
 
     public render(): JSX.Element {
 
@@ -182,12 +216,21 @@ class ConfigPage extends React.Component<any, any> {
                         <Row gutter={20}>
                             <Col className="gutter-row" span={8}>
                                 <FormItem label='服务名' name='appName' rules={[{ required: false, message: '请输入：' }]}>
-                                    <Input placeholder="服务名" />
+                                    <Select
+                                    showSearch
+                                    allowClear
+                                    optionFilterProp="children"
+                                    onChange={this.onChangeAppName}
+                                >{this.state.appNameOption}</Select>
                                 </FormItem>
                             </Col>
                             <Col className="gutter-row" span={8}>
                                 <FormItem label='环境' name='environment' rules={[{ required: false, message: '请输入：' }]}>
-                                    <Input placeholder="环境" />
+                                    <Select
+                                    showSearch
+                                    allowClear
+                                    optionFilterProp="children"
+                                >{this.state.appEnvOption}</Select>
                                 </FormItem>
                             </Col>
                             <Col className="gutter-row" span={2}>
@@ -204,7 +247,15 @@ class ConfigPage extends React.Component<any, any> {
                     <Table dataSource={this.state.dataList} columns={columns} pagination={{ pageSize: 10 }} scroll={{ x: 1500 }} bordered />
                 </Card>
 
-                <ConfigDetail visible={this.state.visible} handleCancel={this.handleCancel} detailData={this.state.detailData} getPages={this.getPagesList} />
+                <ConfigDetail
+                    visible={this.state.visible}
+                    handleCancel={this.handleCancel}
+                    detailData={this.state.detailData}
+                    getPages={this.getPagesList}
+                    onChangeAppName={this.onChangeAppName}
+                    appNameOption={this.state.appNameOption}
+                    appEnvOption={this.state.appEnvOption}
+                />
             </div>
 
         );
