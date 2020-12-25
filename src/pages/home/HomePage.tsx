@@ -44,6 +44,7 @@ class HomePage extends React.Component<any, any> {
         void Axios.post(this.servicePath + '/module/frozenOrActive', value).then((response: { data: { success: any; }; }) => {
             if (response.data.success) {
                 message.success(value.status == "ACTIVE" ? "冻结成功" : "运行成功");
+                this.handleSubmit({})
             } else {
                 message.error(value.status == "ACTIVE" ? "冻结失败" : "运行失败");
             }

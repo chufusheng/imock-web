@@ -67,10 +67,7 @@ const ConfigDetail = (props: any) => {
     const defaultExceptionReturnObj = {
         classNames: [
         ],
-        returnData: {
-            exceptionName: 'java.lang.RuntimeException',
-
-        }
+        returnData: 'java.lang.RuntimeException'
     }
 
     const switchOnChange = (checked: Boolean) => {
