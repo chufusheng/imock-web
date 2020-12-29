@@ -10,14 +10,7 @@
     "build": "tsc && webpack --config webpack.config.js",
     "clean": "rd /s/q built"
   },
-  "author": "Chun Liu",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chunliu/typescript-react-hot-reload"
-  },
   "dependencies": {
-    "@babel/runtime": "7.12.0",
     "@types/codemirror": "^0.0.103",
     "@uiw/react-codemirror": "^3.0.1",
     "antd": "^4.4.0",
@@ -31,8 +24,7 @@
     "react-router-dom": "5.2.0",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
-    "svg-inline-loader": "^0.8.2",
-    "webpack": "^5.11.1"
+    "svg-inline-loader": "^0.8.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

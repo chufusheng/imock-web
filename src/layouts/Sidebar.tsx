@@ -3,6 +3,8 @@ import { Layout, Menu } from 'antd';
 import * as Icons from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
+import logoSvg from "../source/mock.svg";
+
 
 
 
@@ -26,7 +28,8 @@ class Sidebar extends React.Component<unknown, SidebarState> {
         return (
             <Layout.Sider collapsible collapsed={this.state.collapsed} onCollapse={this.toggle}>
                 <div className="ant-layout-logo" >
-                    {/* <img className="logo-img" src={aaa} />  */}
+                    <img className="logo-img" src={logoSvg} />
+                    {/* <img className="logo-img" src="//img.hicdn.cn/fed/images/20190326/824b13d3a7eeeee5fddddaa572e4fa80.svg"/> */}
                     {/* <div className='text-logo'>troublemaker</div> */}
                 </div>
                 <Menu theme="dark" mode={this.state.mode} defaultSelectedKeys={["1"]}>

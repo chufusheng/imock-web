@@ -96,9 +96,9 @@ module.exports = {
             { test: /\.jpg$/, use: ["file-loader"] },
             {
                 test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-                use: ["file-loader?name=assets/[name].[ext]"]
+                use: "file-loader?name=assets/[name].[ext]"
             },
-            { test: /\.md$/, use: ['babel!react-markdown'] },
+            { test: /\.md$/, use: "raw-loader" },
             { test: /\.m?js/, type: "javascript/auto" }
         ]
     },
