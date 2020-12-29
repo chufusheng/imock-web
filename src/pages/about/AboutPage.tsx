@@ -3,12 +3,12 @@ import * as React from "react";
 import { Card } from "antd";
 import ReactMarkdown from "react-markdown"
 
-
-const urlInfo = './test.log';
-
+// const urlInfo = './test.log';
 
 
-const AboutPage = (props: any) => {
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const AboutPage = () => {
 
 
     // React.useEffect(() => {

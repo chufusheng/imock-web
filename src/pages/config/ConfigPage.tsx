@@ -9,7 +9,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Tag, Select, Space, Tooltip, message } from "antd";
+import { Form, Button, Card, Row, Col, Table,  Select, Space, Tooltip, message } from "antd";
 import Axios from "../../utils/axios"
 import moment from 'moment'
 
@@ -155,7 +155,7 @@ class ConfigPage extends React.Component<any, any> {
                 key: 7,
                 title: '是否异常',
                 dataIndex: 'isThrows',
-                align: 'center',
+                // align: 'center',
                 width: 100,
                 render: (text: any) => {
                     if (text) {
@@ -178,8 +178,7 @@ class ConfigPage extends React.Component<any, any> {
                 key: 9,
                 title: '状态',
                 dataIndex: 'isUsable',
-                align: 'center',
-
+                // align: 'center',
                 width: 80,
                 render: (text: any) => {
                     if (text) {
@@ -191,8 +190,8 @@ class ConfigPage extends React.Component<any, any> {
             }, {
                 title: '操作',
                 key: 'action',
-                fixed: 'right',
-                render: (text: any, record: JSON) => {
+                // fixed: 'right',
+                render: (text: any, record: any) => {
                     let refuse = "";
                     if (record.isUsable) {
                         refuse = "暂停"

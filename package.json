@@ -7,7 +7,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "webpack-dev-server",
     "test": "jest",
-    "build": "tsc && webpack --progress --config webpack.prod.config.js",
+    "build": "tsc && webpack --config webpack.config.js",
     "clean": "rd /s/q built"
   },
   "author": "Chun Liu",
@@ -17,19 +17,22 @@
     "url": "https://github.com/chunliu/typescript-react-hot-reload"
   },
   "dependencies": {
+    "@babel/runtime": "7.12.0",
+    "@types/codemirror": "^0.0.103",
     "@uiw/react-codemirror": "^3.0.1",
     "antd": "^4.4.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-json-editor-ajrm": "^2.5.13",
-    "react-markdown": "^5.0.2",
+    "react-markdown": "^5.0.3",
     "react-redux": "^7.2.0",
     "react-router": "5.2.0",
     "react-router-config": "5.1.1",
     "react-router-dom": "5.2.0",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
-    "svg-inline-loader": "^0.8.2"
+    "svg-inline-loader": "^0.8.2",
+    "webpack": "^5.11.1"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

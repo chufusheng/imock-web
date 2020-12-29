@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Layout, Row, Col, Menu } from "antd";
-import { UserOutlined } from '@ant-design/icons';
+// import { UserOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
 
 export const Header: React.StatelessComponent<unknown> = () => {

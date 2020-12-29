@@ -14,7 +14,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Select, Tag, Switch, Modal, message } from "antd";
+import { Form, Input, Row, Col, Select, Switch, Modal, message } from "antd";
 import JSONInput from 'react-json-editor-ajrm';
 import locale from 'react-json-editor-ajrm/locale/en';
 
@@ -24,7 +24,7 @@ import config from "../../config/config"
 
 
 const FormItem = Form.Item;
-const { Option } = Select;
+// const { Option } = Select;
 
 
 const ConfigDetail = (props: any) => {

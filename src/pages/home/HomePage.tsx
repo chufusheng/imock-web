@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import * as React from "react";
-import { Form, Input, Button, Card, Row, Col, Table, Select, Space, message } from "antd";
+import { Form, Button, Card, Row, Col, Table, Select, Space, message } from "antd";
 import Axios from "../../utils/axios"
 import moment from 'moment'
 import config from "../../config/config"
@@ -149,8 +149,8 @@ class HomePage extends React.Component<any, any> {
             }, {
                 title: '操作',
                 key: 'action',
-                align: 'center',
-                render: (text: any, record: JSON) => {
+                // align: 'center',
+                render: (text: any, record: any) => {
                     let refuse = "";
                     if (record.status == "ACTIVE") {
                         refuse = "冻结"

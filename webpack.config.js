@@ -26,9 +26,12 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     resolve: {
+        alias: { "stream": "stream-browserify" },
+        fallback: { "path": require.resolve("path-browserify") },
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: [".ts", ".tsx", ".js", ".json", ".svg", ".md"]
     },
+
     devServer: {
         port: '8080',
         // Change it if other port needs to be used
@@ -71,7 +74,7 @@ module.exports = {
                         },
                     },
                 ],
-                exclude: [resolve(__dirname, "node_modules")],
+                // exclude: [resolve(__dirname, "node_modules")],
             },
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             {
@@ -89,13 +92,14 @@ module.exports = {
                     "css-loader"
                 ]
             },
-            { test: /\.png$/, loader: "url-loader?limit=100000" },
-            { test: /\.jpg$/, loader: "file-loader" },
+            { test: /\.png$/, use: ["url-loader"] },
+            { test: /\.jpg$/, use: ["file-loader"] },
             {
                 test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-                loader: "file-loader?name=assets/[name].[ext]"
+                use: ["file-loader?name=assets/[name].[ext]"]
             },
-            { test: /\.md$/, loader: 'babel!react-markdown' }
+            { test: /\.md$/, use: ['babel!react-markdown'] },
+            { test: /\.m?js/, type: "javascript/auto" }
         ]
     },
     plugins: [
@@ -108,6 +112,9 @@ module.exports = {
         // new webpack.NamedModulesPlugin(),
         // prints more readable module names in the browser console on HMR updates
         new HtmlWebpackPlugin({ template: resolve(__dirname, 'src/index.html') }),
+        new webpack.ProvidePlugin({
+            Buffer: ["buffer", "Buffer"]
+        })
         // inject <script> in html file. 
     ],
 };
