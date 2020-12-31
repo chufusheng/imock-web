@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import * as React from "react";
@@ -11,13 +12,9 @@ const AboutPage = () => {
     // React.useEffect(() => {
     //     readTxt()
     // }, [props])
-
-
-    window.console.log(myData)
-    const input = '### 标题';
     return (
         <Card bordered title="About" style={{ margin: "16px 16px" }} >
-            <ReactMarkdown source={myData} />
+            <ReactMarkdown source={myData}/>
         </Card >
     );
 }

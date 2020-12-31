@@ -1,34 +1,84 @@
 # troublemaker  (捣蛋鬼)
 
 
-This is a very simple boilerplate for creating React web applications with TypeScript. It is configured with webpack dev server and hot module replacement to allow changes to be loaded while the application is running. The following is a preview of it:
+#### 这是一个mock服务管理后台，包含用户（接入的应用）、配置（应用mock规则配置）功能
 
-![preview](preview.png)
+- 使用该mock平台需要在应用端安装 mock client，安装步骤
 
-This boilerplate is based on the following packages:
 
-* [webpack 4](https://webpack.js.org/)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
-* [typescript](http://www.typescriptlang.org/)
-* [react 16](https://reactjs.org/)
-* [redux 4](https://redux.js.org/introduction)
-* [antd 4](https://github.com/ant-design/ant-design/issues/21656)
+### 第一步（安装）
 
-For recent changes, please check [changelog.md](./CHANGELOG.md).
 
-## Install
+- 配置应用jvm环境变量
 
-How to use this template:
-
-```shell
-git clone https://github.com/chunliu/typescript-react-hot-reload.git
-npm install
-npm start
+```
+-Dmock.host=http://10.250.10.6:8003 -Dapp.name=hsc -Dapp.env=20201207-daily-zejun
 ```
 
-## Other reference:
+- 启动应用后安装mock client
+```shell
+curl -s https://kunchu.oss-cn-beijing.aliyuncs.com/install-troublemaker.sh |sh
+```
+- 启动mock client （默认启动 48 pid  如果不是 需要手动启动）
 
-* [TypeScript document](https://www.typescriptlang.org/docs/handbook/react-&-webpack.html)
-* [Hot Module Replacement in webpack](https://webpack.js.org/concepts/hot-module-replacement/)
+```
+cd ~
+jps 通过jps找到应用的 pid  比如 pid 为 49
+./sandbox/bin/sandbox.sh -p 49
+```
+- 如果启动成功，就可以在mock平台查看到自己应用的用户已经在运行中了
 
-All feedback and pull requests are welcome.
+
+### 第二步（配置mock）
+
+
+![image](https://kunchu.oss-cn-beijing.aliyuncs.com/image/create.png)
+
+1. 选择需要mock的应用及环境
+2. 配置需要mock的类名及方法名 （Interface类不支持）
+3. 配置这个方法需要的返回
+- 如果返回的是基本类型，直接在returnData里返回（比如布尔类型返回false）例如：
+```
+{
+  classNames: [
+  ],
+  returnData: false
+}
+```
+
+- 如果返回的是简单对象  例如：
+
+```
+{
+  classNames: [
+    'com.ytgw.facade.message.SupergwMessage'
+  ],
+  returnData: {
+    businessResultCode: 'SUCCESS1',
+    channelResponseCode: '0',
+    channelResponseMessage: '校验成功',
+    channelResponseType: 'SUCCESS',
+    data: {
+      name: 'message'
+    }
+  }
+}
+```
+
+- 如果返回的是嵌套对象 例如：
+
+```
+{
+  classNames: [
+    'com.tester.jvm.mock.common.domain.MockResult',//这里需要按照类型从外到内排序（MockResult<String>）
+    'java.lang.String'
+  ],
+  returnData: {
+    success: true,
+    data: 'ccccccc',
+    message: '获取成功'
+  }
+}
+```
+
+    

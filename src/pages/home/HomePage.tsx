@@ -142,6 +142,8 @@ class HomePage extends React.Component<any, any> {
                 render: (text: any) => {
                     if (text == "ACTIVE") {
                         return <p style={{ color: '#24d34a' }}>运行中</p>
+                    } else if(text=="OFFLINE"){
+                        return <p style={{ color: '#ffcc00' }}>离线</p>
                     } else {
                         return <p style={{ color: '#F5222E' }}>已冻结</p>
                     }
