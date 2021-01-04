@@ -8,13 +8,18 @@ import myData from '../../source/README.md';
 
 const AboutPage = () => {
 
+    // const renderers = {
+    //     code: () => {
+    //       return <SyntaxHighlighter style={dark}  />
+    //     }
+    //   }
 
     // React.useEffect(() => {
     //     readTxt()
     // }, [props])
     return (
         <Card bordered title="About" style={{ margin: "16px 16px" }} >
-            <ReactMarkdown source={myData}/>
+            <ReactMarkdown source={myData} escapeHtml={false} />
         </Card >
     );
 }

@@ -29,6 +29,10 @@ jps 通过jps找到应用的 pid  比如 pid 为 49
 - 如果启动成功，就可以在mock平台查看到自己应用的用户已经在运行中了
 
 
+~~~js
+console.log('It works!')
+~~~
+
 ### 第二步（配置mock）
 
 

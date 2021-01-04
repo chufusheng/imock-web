@@ -49,7 +49,7 @@ const ConfigDetail = (props: any) => {
 
 
     const isUpdata = () => {
-        if (props.detailData.id == undefined) {
+        if (props.detailData.id== undefined) {
             return false
         } else {
             return true
