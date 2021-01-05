@@ -24,8 +24,7 @@ const { Option } = Select;
 
 const ConfigPage = (props: any) => {
     const servicePath = config.backendMap.test != undefined ? config.backendMap.test : ""
-    const formRef = React.createRef()
-
+    const formRef: any = React.createRef()
 
     const [dataList, setDataList] = React.useState<any>([])
     const [visible, setVisible] = React.useState<any>()
@@ -45,7 +44,7 @@ const ConfigPage = (props: any) => {
     };
 
     const stopAndOpen = (value: any) => {
-        const form = formRef.current
+        const form: any = formRef.current
         const data = { "id": value.id, "isUsable": value.isUsable }
         void Axios.post(servicePath + '/config/status', data).then((response: any) => {
             if (response.data.success) {
@@ -186,7 +185,6 @@ const ConfigPage = (props: any) => {
         }, {
             title: '操作',
             key: 'action',
-            // fixed: 'right',
             render: (text: any, record: any) => {
                 let refuse = "";
                 if (record.isUsable) {
