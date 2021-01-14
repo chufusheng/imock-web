@@ -1,34 +1,32 @@
 # troublemaker  (捣蛋鬼)
 
 
-#### 这是一个mock服务管理后台，包含用户（接入的应用）、配置（应用mock规则配置）功能
+#### 这是一个imock服务可视化管理后台，包含用户（接入的应用）、配置（应用mock规则配置）功能
 
-- 使用该mock平台需要在应用端安装 mock client，安装步骤
-
-
-### 第一步（安装）
-
-
-1. 配置应用jvm环境变量
-
+ 
+####  安装imock-web 
+1. 首先需要安装[Node](https://nodejs.org/zh-cn/) 环境
+2. 下载项目 [imock-web](https://github.com/chufusheng/imock-web)
+3. 进入项目 /src/config  配置后台地址 
+4. 进入项目  运行  yarn install （需要安装yarn  npm install yarn）
+5. 启动    运行    yarn start
+     
 ```
--Dmock.host=http://10.250.10.6:8003 -Dapp.name=hsc -Dapp.env=20201207-daily-zejun
+const config = {
+    "appCode": "",
+    "pageTitle": "",
+    "service": "",
+    "backendMap": {
+        "test": "http://127.0.0.1:8003"
+    },
+}
 ```
-2. 启动应用后安装mock client
-```shell
-curl -s https://kunchu.oss-cn-beijing.aliyuncs.com/install-troublemaker.sh |sh
-```
-3. 启动mock client （默认启动 48 pid  如果不是 需要手动启动）
-
-```
-cd ~
-jps 通过jps找到应用的 pid  比如 pid 为 49
-./sandbox/bin/sandbox.sh -p 49
-```
-4. 如果启动成功，就可以在mock平台查看到自己应用的用户已经在运行中了
-
 
 ### 第二步（配置mock）
+
+
+
+![image](https://kunchu.oss-cn-beijing.aliyuncs.com/image/first.png)
 
 
 ![image](https://kunchu.oss-cn-beijing.aliyuncs.com/image/create.png)
@@ -37,7 +35,7 @@ jps 通过jps找到应用的 pid  比如 pid 为 49
 2. 配置需要mock的类名及方法名 （Interface类不支持）
 3. 配置这个方法需要的返回
 - 如果返回的是基本类型，直接在returnData里返回（比如布尔类型返回false）例如：
-```
+``` 
 {
   classNames: [
   ],
@@ -79,4 +77,16 @@ jps 通过jps找到应用的 pid  比如 pid 为 49
 }
 ```
 
-    
+- 如果是异常返回  例如：
+``` 
+{
+  classNames: [
+  ],
+  returnData: java.io.IOException
+}
+```
+
+#### 功能介绍
+1. 运行及暂停功能 是动态开启关闭目标应用的mock功能，即开即用，即关即停
+2. 配置好mock 后需要手动在首页更新配置，目的是更新目标应用的监听
+3. 日志功能可以远程查看目标应用mock 服务的日志，便于排查问题
