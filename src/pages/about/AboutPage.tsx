@@ -9,7 +9,7 @@ import * as React from "react";
 import { Card, message } from "antd";
 import ReactMarkdown from "react-markdown"
 import myData from '../../source/README.md';
-import Kityminder from 'react-kityminder';
+// import Kityminder from 'react-kityminder';
 import { useState } from "react";
 {/* <><script src="https://cdn.jsdelivr.net/npm/kity"></script><script src="https://cdn.jsdelivr.net/npm/kityminder-core"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-kityminder"></script></>
@@ -39,10 +39,10 @@ const AboutPage = () => {
     // }, [props])
     return (
         <div>
-            {/* <Card bordered title="About" style={{ margin: "16px 16px" }} >
+            <Card bordered title="About" style={{ margin: "16px 16px" }} >
                 <ReactMarkdown source={myData} escapeHtml={false} />
-            </Card > */}
-            <Kityminder
+            </Card >
+            {/* <Kityminder
                 ref={minderRef}
                 value={value}
                 tags={['前置条件', '执行步骤', '预期结果']}
@@ -62,7 +62,7 @@ const AboutPage = () => {
                     width: '100%',
                     height: '800px',
                   }}
-            />
+            /> */}
             {/* <AgileTCEditor
                 // ref={editorNode => (this.editorNode = editorNode)}
                 tags={['前置条件', '执行步骤', '预期结果']}
