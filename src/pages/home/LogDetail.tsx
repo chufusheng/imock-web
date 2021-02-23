@@ -12,7 +12,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/eclipse.css';
 import 'codemirror/theme/monokai.css';
-
+import './logDetail.css'
 import config from "../../config/config"
 
 
@@ -43,6 +43,7 @@ const HomeDetail = (props: any) => {
     return (
         <div>
             <Modal
+            wrapClassName={'web'}
                 title="Log"
                 width='50%'
                 maskClosable={false}

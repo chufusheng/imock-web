@@ -5,7 +5,6 @@ import { ConfigProvider } from "antd";
 import enUS from 'antd/es/locale/en_US';
 import {route} from "./routes";
 import { configureStore, initStore } from "./store/configStore";
-
 const store = configureStore();
 store.dispatch<any>(initStore());
 
