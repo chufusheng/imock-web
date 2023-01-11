@@ -99,6 +99,7 @@ module.exports = {
                 use: "file-loader?name=assets/[name].[ext]"
             },
             { test: /\.md$/, use: "raw-loader" },
+            { test: /\.json$/, use: "json-loader" },
             { test: /\.m?js/, type: "javascript/auto" }
         ]
     },
